@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>三浦折疊是什麼？｜科展學習頁</title>
+<style>
+  :root {
+    --bg: #f4f7fb;
+    --card: #ffffff;
+    --ink: #1a2332;
+    --muted: #5a6a7e;
+    --accent: #2b6cb0;
+    --accent2: #dd6b20;
+    --mountain: #c53030;
+    --valley: #2b6cb0;
+    --green: #276749;
+    --purple: #6b46c1;
+    --shadow: 0 8px 24px rgba(26, 35, 50, 0.08);
+    --radius: 16px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", "Heiti TC", "Source Han Sans TC", sans-serif;
+    background: var(--bg);
+    color: var(--ink);
+    line-height: 1.7;
+    font-size: 17px;
+  }
+  .hero {
+    background: linear-gradient(135deg, #1a365d 0%, #2b6cb0 55%, #38b2ac 100%);
+    color: #fff;
+    padding: 48px 24px 56px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      repeating-linear-gradient(60deg, transparent, transparent 18px, rgba(255,255,255,.04) 18px, rgba(255,255,255,.04) 20px),
+      repeating-linear-gradient(-60deg, transparent, transparent 18px, rgba(255,255,255,.03) 18px, rgba(255,255,255,.03) 20px);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; max-width: 900px; margin: 0 auto; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,255,255,.18);
+    border: 1px solid rgba(255,255,255,.35);
+    padding: 4px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    letter-spacing: .04em;
+    margin-bottom: 14px;
+  }
+  .hero h1 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    font-weight: 800;
+    letter-spacing: .02em;
+    margin-bottom: 10px;
+  }
+  .hero p { opacity: .95; font-size: 1.05rem; max-width: 620px; margin: 0 auto; }
+  nav.toc {
+    max-width: 1100px;
+    margin: -28px auto 32px;
+    padding: 0 20px;
+    position: relative;
+    z-index: 2;
+  }
+  nav.toc ul {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    background: var(--card);
+    padding: 14px 16px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+  }
+  nav.toc a {
+    text-decoration: none;
+    color: var(--accent);
+    font-size: 14px;
+    font-weight: 600;
+    padding: 6px 12px;
+    border-radius: 999px;
+    background: #ebf4ff;
+    transition: background .2s, transform .15s;
+  }
+  nav.toc a:hover { background: #bee3f8; transform: translateY(-1px); }
+  main {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 0 20px 48px;
+  }
+  section.card {
+    background: var(--card);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 28px 28px 32px;
+    margin-bottom: 24px;
+  }
+  section.card h2 {
+    font-size: 1.45rem;
+    color: var(--accent);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  section.card h2 .num {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px; height: 32px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #2b6cb0, #38b2ac);
+    color: #fff;
+    font-size: 15px;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .lead { color: var(--muted); margin-bottom: 16px; }
+  .story-box {
+    background: linear-gradient(135deg, #ebf8ff, #e6fffa);
+    border-left: 5px solid #38b2ac;
+    padding: 16px 18px;
+    border-radius: 0 12px 12px 0;
+    margin: 14px 0;
+  }
+  .story-box strong { color: #234e52; }
+  .gloss {
+    display: inline;
+    color: var(--muted);
+    font-size: .92em;
+  }
+  .gloss::before { content: "（"; }
+  .gloss::after { content: "）"; }
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    margin-top: 16px;
+  }
+  @media (max-width: 800px) {
+    .two-col { grid-template-columns: 1fr; }
+  }
+  .panel {
+    background: #f7fafc;
+    border-radius: 12px;
+    padding: 14px;
+    border: 1px solid #e2e8f0;
+  }
+  .panel h3 {
+    font-size: 1rem;
+    margin-bottom: 8px;
+    color: var(--ink);
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin: 12px 0 8px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch {
+    width: 28px; height: 4px;
+    border-radius: 2px;
+    display: inline-block;
+  }
+  .swatch.mountain { background: var(--mountain); }
+  .swatch.valley {
+    background: transparent;
+    border-top: 3px dashed var(--valley);
+    height: 0;
+    width: 28px;
+  }
+  .controls {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px 20px;
+    align-items: center;
+    margin: 14px 0;
+    padding: 14px 16px;
+    background: #edf2f7;
+    border-radius: 12px;
+  }
+  .controls label {
+    font-size: 14px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .controls input[type="range"] {
+    width: 160px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .controls input[type="checkbox"] {
+    width: 16px; height: 16px;
+    accent-color: var(--accent);
+    cursor: pointer;
+  }
+  .btn {
+    appearance: none;
+    border: none;
+    background: linear-gradient(135deg, #2b6cb0, #3182ce);
+    color: #fff;
+    font-family: inherit;
+    font-size: 14px;
+    font-weight: 700;
+    padding: 8px 16px;
+    border-radius: 999px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(43,108,176,.35);
+    transition: transform .15s, box-shadow .15s;
+  }
+  .btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(43,108,176,.4); }
+  .btn:active { transform: translateY(0); }
+  .btn.secondary {
+    background: linear-gradient(135deg, #dd6b20, #ed8936);
+    box-shadow: 0 2px 8px rgba(221,107,32,.35);
+  }
+  .val-chip {
+    background: #fff;
+    border: 1px solid #cbd5e0;
+    border-radius: 8px;
+    padding: 2px 8px;
+    font-variant-numeric: tabular-nums;
+    font-size: 13px;
+    min-width: 48px;
+    text-align: center;
+  }
+  svg.diagram {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-height: 360px;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+  }
+  .compare-wrap {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-top: 12px;
+  }
+  @media (max-width: 700px) {
+    .compare-wrap { grid-template-columns: 1fr; }
+  }
+  .compare-card {
+    background: #f7fafc;
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+  }
+  .compare-card h4 { margin-bottom: 6px; font-size: .95rem; }
+  .compare-card p { font-size: 13px; color: var(--muted); margin-top: 6px; }
+  .apps {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 14px;
+    margin-top: 12px;
+  }
+  .app-card {
+    background: linear-gradient(160deg, #fff, #f0fff4);
+    border: 1px solid #c6f6d5;
+    border-radius: 14px;
+    padding: 16px 12px;
+    text-align: center;
+    transition: transform .2s, box-shadow .2s;
+  }
+  .app-card:nth-child(2) { background: linear-gradient(160deg, #fff, #fffaf0); border-color: #feebc8; }
+  .app-card:nth-child(3) { background: linear-gradient(160deg, #fff, #ebf8ff); border-color: #bee3f8; }
+  .app-card:nth-child(4) { background: linear-gradient(160deg, #fff, #faf5ff); border-color: #e9d8fd; }
+  .app-card:nth-child(5) { background: linear-gradient(160deg, #fff, #fff5f5); border-color: #fed7d7; }
+  .app-card:hover { transform: translateY(-3px); box-shadow: 0 8px 16px rgba(0,0,0,.08); }
+  .app-card .icon { font-size: 2rem; margin-bottom: 6px; line-height: 1; }
+  .app-card h4 { font-size: .95rem; margin-bottom: 4px; }
+  .app-card p { font-size: 13px; color: var(--muted); }
+  .tip-box {
+    background: linear-gradient(135deg, #fefcbf, #faf089);
+    border: 2px solid #d69e2e;
+    border-radius: 14px;
+    padding: 18px 20px;
+    margin-top: 8px;
+  }
+  .tip-box h3 { color: #744210; margin-bottom: 8px; font-size: 1.05rem; }
+  .tip-box ul { margin-left: 1.2em; color: #744210; }
+  .tip-box li { margin-bottom: 4px; }
+  .callout {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    background: #ebf4ff;
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-top: 14px;
+  }
+  .callout .emoji { font-size: 1.5rem; flex-shrink: 0; }
+  footer {
+    text-align: center;
+    padding: 28px 20px 40px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid #e2e8f0;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  footer strong { color: var(--ink); }
+  .dof-viz {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-top: 12px;
+  }
+  .dof-item {
+    flex: 1 1 220px;
+    max-width: 320px;
+    background: #f7fafc;
+    border-radius: 12px;
+    padding: 12px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+  }
+  .dof-item.good { border-color: #9ae6b4; background: #f0fff4; }
+  .dof-item.bad { border-color: #feb2b2; background: #fff5f5; }
+  .math-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    align-items: center;
+    margin-top: 12px;
+  }
+  .math-row .explain { flex: 1 1 240px; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-inner">
+    <div class="badge">科展 · 科學探索 · 適合國小高年級</div>
+    <h1>三浦折疊是什麼？</h1>
+    <p>一種「一拉就開、一推就收」的神奇摺法——從日本地圖到太空太陽能板，都用得到它！</p>
+  </div>
+</header>
+
+<nav class="toc" aria-label="目錄">
+  <ul>
+    <li><a href="#what">什麼是三浦折疊</a></li>
+    <li><a href="#crease">折痕長什麼樣子</a></li>
+    <li><a href="#why">為什麼一拉就開</a></li>
+    <li><a href="#anim">展開與收合</a></li>
+    <li><a href="#vs">跟普通摺紙不同</a></li>
+    <li><a href="#apps">可以用在哪裡</a></li>
+    <li><a href="#tips">科展小提示</a></li>
+  </ul>
+</nav>
+
+<main>
+
+<!-- 1. 什麼是三浦折疊 -->
+<section class="card" id="what">
+  <h2><span class="num">1</span>什麼是三浦折疊</h2>
+  <p class="lead">三浦折疊（日文：ミウラ折り，英文：Miura-ori）是一種特別的紙摺方式，讓一大張紙可以壓得很扁，又能一下子展開。</p>
+  <div class="story-box">
+    <strong>小故事：</strong>
+    1970 年代，日本東京大學的教授<strong>三浦公亮</strong>（Miura Koryo）發明了這種摺法。
+    他一開始是想讓太空人在太空裡更容易打開大型結構。
+    後來大家發現：用這種方法摺的<strong>地圖</strong>，只要拉對角線的兩個角，整張地圖就會「啪」地打開——超方便！
+  </div>
+  <p>簡單說：三浦折疊把紙切成很多個<strong>平行四邊形</strong><span class="gloss">像被推歪的長方形格子</span>，
+  再用<strong>山折</strong>和<strong>谷折</strong>交錯排列。這樣整張紙就變成一個可以「連動」的神奇機關。</p>
+</section>
+
+<!-- 2. 折痕長什麼樣子 -->
+<section class="card" id="crease">
+  <h2><span class="num">2</span>折痕長什麼樣子</h2>
+  <p class="lead">三浦折疊的折痕看起來像「歪歪的棋盤」。橫線是直線，豎線會左右交錯傾斜，形成平行四邊形格子。</p>
+
+  <div class="legend">
+    <span><i class="swatch mountain"></i> 山折（往上凸，像山峰）</span>
+    <span><i class="swatch valley"></i> 谷折（往下凹，像山谷）</span>
+  </div>
+
+  <div class="controls">
+    <label>
+      <input type="checkbox" id="showLabels" checked>
+      顯示「山折／谷折」標籤
+    </label>
+    <label>
+      角度 α
+      <input type="range" id="alphaSlider" min="45" max="75" value="60" step="1">
+      <span class="val-chip" id="alphaVal">60°</span>
+    </label>
+  </div>
+
+  <svg class="diagram" id="creaseSvg" viewBox="0 0 640 340" role="img" aria-label="三浦折疊折痕圖">
+    <!-- filled by JS -->
+  </svg>
+
+  <div class="math-row">
+    <svg width="200" height="120" viewBox="0 0 200 120" aria-label="平行四邊形參數 a、b、α">
+      <polygon points="40,90 150,90 170,30 60,30" fill="#ebf8ff" stroke="#2b6cb0" stroke-width="2"/>
+      <text x="90" y="108" font-size="14" fill="#1a2332" font-family="inherit">邊 a</text>
+      <text x="168" y="68" font-size="14" fill="#1a2332" font-family="inherit">邊 b</text>
+      <path d="M60,90 A18,18 0 0 1 66,74" fill="none" stroke="#dd6b20" stroke-width="2"/>
+      <text x="72" y="82" font-size="15" fill="#dd6b20" font-weight="700" font-family="inherit">α</text>
+    </svg>
+    <div class="explain">
+      <p>每個小格子都是<strong>平行四邊形</strong>，有兩邊長 <strong>a</strong>、<strong>b</strong>，還有一個傾斜角 <strong>α</strong>（阿爾法）。</p>
+      <p style="margin-top:6px;color:var(--muted);font-size:15px;">
+        α 越大，格子越「正」；α 越小，格子越「斜」。你可以拖上面的滑桿，看折痕怎麼變！
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- 3. 為什麼一拉就開 -->
+<section class="card" id="why">
+  <h2><span class="num">3</span>為什麼一拉就開</h2>
+  <p class="lead">秘訣是：三浦折疊幾乎只有<strong>一個自由度</strong><span class="gloss">自由度＝可以獨立活動的方向數量</span>。</p>
+  <p>想像門上的鉸鏈：門只能繞一個軸開關，這就是「一個自由度」。三浦折疊也一樣——你只要拉一個角落，所有格子會一起連動打開！</p>
+
+  <div class="dof-viz">
+    <div class="dof-item bad">
+      <h4>手風琴摺（普通摺）</h4>
+      <svg viewBox="0 0 220 100" width="100%" height="90" aria-label="手風琴摺示意">
+        <polyline points="20,50 40,20 60,80 80,20 100,80 120,20 140,80 160,20 180,80 200,50"
+          fill="none" stroke="#c53030" stroke-width="3" stroke-linejoin="round"/>
+        <circle cx="20" cy="50" r="5" fill="#c53030"/>
+        <circle cx="200" cy="50" r="5" fill="#c53030"/>
+        <text x="50" y="96" font-size="11" fill="#742a2a" font-family="inherit">每道摺痕要分開拉</text>
+      </svg>
+      <p style="font-size:13px;color:#742a2a;">很多摺痕各自活動 → 自由度多 → 容易卡住、不好一次打開</p>
+    </div>
+    <div class="dof-item good">
+      <h4>三浦摺</h4>
+      <svg viewBox="0 0 220 100" width="100%" height="90" aria-label="三浦摺示意">
+        <polygon points="30,70 70,55 100,75 60,90" fill="#9ae6b4" stroke="#276749" stroke-width="1.5"/>
+        <polygon points="70,55 110,40 140,60 100,75" fill="#68d391" stroke="#276749" stroke-width="1.5"/>
+        <polygon points="110,40 155,28 185,48 140,60" fill="#48bb78" stroke="#276749" stroke-width="1.5"/>
+        <line x1="20" y1="50" x2="195" y2="35" stroke="#2b6cb0" stroke-width="2" stroke-dasharray="4 3"/>
+        <circle cx="20" cy="50" r="5" fill="#2b6cb0"/>
+        <circle cx="195" cy="35" r="5" fill="#2b6cb0"/>
+        <text x="55" y="96" font-size="11" fill="#22543d" font-family="inherit">一拉對角，全部連動</text>
+      </svg>
+      <p style="font-size:13px;color:#22543d;">幾乎只有 1 個自由度 → 拉一下，整張一起開！</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="emoji">💡</span>
+    <div>
+      <strong>課堂比喻：</strong>手風琴摺像「很多小朋友各拉各的繩子」；三浦摺像「一條繩子串起所有人」——你一拉，大家一起動！
+    </div>
+  </div>
+</section>
+
+<!-- 4. 展開與收合 -->
+<section class="card" id="anim">
+  <h2><span class="num">4</span>展開與收合</h2>
+  <p class="lead">拖動滑桿，看三浦圖案從「收合」變成「完全展開」。也可以按播放，看一次完整動畫。</p>
+
+  <div class="controls">
+    <label>
+      展開程度
+      <input type="range" id="foldSlider" min="0" max="100" value="35" step="1">
+      <span class="val-chip" id="foldVal">35%</span>
+    </label>
+    <button type="button" class="btn" id="playBtn">▶ 播放動畫</button>
+    <button type="button" class="btn secondary" id="resetBtn">回到半開</button>
+  </div>
+
+  <svg class="diagram" id="foldSvg" viewBox="0 0 720 380" role="img" aria-label="三浦折疊展開動畫">
+    <!-- filled by JS -->
+  </svg>
+  <p style="text-align:center;font-size:13px;color:var(--muted);margin-top:8px;">
+    0%＝收合得很扁　·　100%＝完全攤平　·　格子會像面板一樣傾斜（投影視角）
+  </p>
+</section>
+
+<!-- 5. 跟普通摺紙有什麼不同 -->
+<section class="card" id="vs">
+  <h2><span class="num">5</span>跟普通摺紙有什麼不同</h2>
+  <p class="lead">普通摺紙常常要把紙<strong>彎彎曲曲</strong>才能摺成；三浦折疊屬於<strong>剛性可摺</strong><span class="gloss">rigid-foldable：面板本身幾乎不彎，只靠折痕轉動</span>。</p>
+
+  <div class="compare-wrap">
+    <div class="compare-card">
+      <h4>普通摺紙（例如千紙鶴）</h4>
+      <svg viewBox="0 0 200 120" width="100%" height="110">
+        <path d="M40,90 Q70,20 100,55 Q130,20 160,90" fill="none" stroke="#a0aec0" stroke-width="2"/>
+        <path d="M55,85 L100,35 L145,85 Z" fill="#fed7d7" stroke="#c53030" stroke-width="1.5"/>
+        <path d="M70,70 Q100,50 130,70" fill="none" stroke="#c53030" stroke-width="1.5" stroke-dasharray="3 2"/>
+        <text x="55" y="108" font-size="11" fill="#742a2a" font-family="inherit">紙面會彎曲變形</text>
+      </svg>
+      <p>摺的過程中，紙常常要「軟軟地彎一下」才能對齊。</p>
+    </div>
+    <div class="compare-card">
+      <h4>三浦折疊（剛性可摺）</h4>
+      <svg viewBox="0 0 200 120" width="100%" height="110">
+        <polygon points="30,85 70,70 95,88 55,100" fill="#bee3f8" stroke="#2b6cb0" stroke-width="1.5"/>
+        <polygon points="70,70 115,52 140,70 95,88" fill="#90cdf4" stroke="#2b6cb0" stroke-width="1.5"/>
+        <polygon points="115,52 155,38 178,55 140,70" fill="#63b3ed" stroke="#2b6cb0" stroke-width="1.5"/>
+        <circle cx="70" cy="70" r="3" fill="#dd6b20"/>
+        <circle cx="95" cy="88" r="3" fill="#dd6b20"/>
+        <circle cx="115" cy="52" r="3" fill="#dd6b20"/>
+        <text x="40" y="114" font-size="11" fill="#2a4365" font-family="inherit">面板硬硬的，只轉折痕</text>
+      </svg>
+      <p>每個平行四邊形面板保持平坦，只繞折痕「轉門」——所以能用硬板、金屬片做！</p>
+    </div>
+  </div>
+
+  <div class="callout">
+    <span class="emoji">🚀</span>
+    <div>
+      因為可以做成<strong>硬的材料</strong>（不只是紙），科學家才敢把它用在太空太陽能板、太陽帆上——紙太軟，太空裡不行！
+    </div>
+  </div>
+</section>
+
+<!-- 6. 可以用在哪裡 -->
+<section class="card" id="apps">
+  <h2><span class="num">6</span>可以用在哪裡</h2>
+  <p class="lead">三浦折疊不只是好玩，還有很多真實用途：</p>
+  <div class="apps">
+    <div class="app-card">
+      <div class="icon" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 40 40"><rect x="4" y="8" width="32" height="24" rx="2" fill="#48bb78"/><line x1="12" y1="8" x2="12" y2="32" stroke="#276749" stroke-width="1.5"/><line x1="20" y1="8" x2="20" y2="32" stroke="#276749" stroke-width="1.5"/><line x1="28" y1="8" x2="28" y2="32" stroke="#276749" stroke-width="1.5"/><line x1="4" y1="16" x2="36" y2="16" stroke="#276749" stroke-width="1.5"/><line x1="4" y1="24" x2="36" y2="24" stroke="#276749" stroke-width="1.5"/><circle cx="34" cy="6" r="4" fill="#f6e05e"/></svg>
+      </div>
+      <h4>太空太陽能板</h4>
+      <p>發射時收得很扁，到太空再拉開發電</p>
+    </div>
+    <div class="app-card">
+      <div class="icon" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 40 40"><polygon points="20,4 36,20 20,36 4,20" fill="#ed8936" opacity=".9"/><polygon points="20,10 30,20 20,30 10,20" fill="#faf089"/><circle cx="20" cy="20" r="3" fill="#dd6b20"/></svg>
+      </div>
+      <h4>太陽帆</h4>
+      <p>用陽光推力推太空船前進的巨大帆</p>
+    </div>
+    <div class="app-card">
+      <div class="icon" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28" rx="2" fill="#4299e1"/><path d="M10,10 L18,14 L10,18 Z" fill="#ebf8ff"/><path d="M22,14 L30,10 L30,22 L22,26 Z" fill="#bee3f8"/><path d="M10,22 L18,26 L10,30 Z" fill="#90cdf4"/><line x1="18" y1="14" x2="22" y2="14" stroke="#2b6cb0" stroke-width="1"/><line x1="18" y1="26" x2="22" y2="26" stroke="#2b6cb0" stroke-width="1"/></svg>
+      </div>
+      <h4>可折地圖</h4>
+      <p>一拉就開的旅遊地圖，不會撕壞</p>
+    </div>
+    <div class="app-card">
+      <div class="icon" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 40 40"><rect x="8" y="18" width="24" height="16" fill="#9f7aea"/><polygon points="6,18 20,6 34,18" fill="#b794f4"/><rect x="16" y="26" width="8" height="8" fill="#faf5ff"/></svg>
+      </div>
+      <h4>建築結構</h4>
+      <p>可開合的屋頂、遮陽板、臨時展場</p>
+    </div>
+    <div class="app-card">
+      <div class="icon" aria-hidden="true">
+        <svg width="40" height="40" viewBox="0 0 40 40"><circle cx="20" cy="12" r="6" fill="#fc8181"/><rect x="14" y="18" width="12" height="10" rx="2" fill="#f56565"/><rect x="8" y="20" width="6" height="3" rx="1" fill="#c53030"/><rect x="26" y="20" width="6" height="3" rx="1" fill="#c53030"/><rect x="15" y="28" width="4" height="8" rx="1" fill="#742a2a"/><rect x="21" y="28" width="4" height="8" rx="1" fill="#742a2a"/></svg>
+      </div>
+      <h4>機器人</h4>
+      <p>可折疊的機器手臂、救援機器人身體</p>
+    </div>
+  </div>
+</section>
+
+<!-- 7. 給科展的小提示 -->
+<section class="card" id="tips">
+  <h2><span class="num">7</span>給科展的小提示</h2>
+  <div class="tip-box">
+    <h3>🔬 實驗可以這樣做</h3>
+    <ul>
+      <li><strong>量「展開比」</strong>：收合後的面積 ÷ 展開後的面積（或量長、寬）。看看不同摺法誰收得更扁！</li>
+      <li><strong>試不同角度 α</strong>：用尺畫 45°、60°、75° 的平行四邊形格子，比較哪一種最好拉、最不容易卡住。</li>
+      <li><strong>對照組</strong>：做一份「手風琴摺」地圖、一份「三浦摺」地圖，請同學計時誰開得比較快。</li>
+      <li><strong>材料挑戰</strong>：用紙、卡紙、薄塑膠片各做一份，觀察「剛性可摺」在硬材料上更明顯。</li>
+    </ul>
+  </div>
+  <p style="margin-top:14px;color:var(--muted);font-size:15px;">
+    記住：科展不只是「做一個漂亮作品」，更重要的是<strong>提出問題 → 動手測量 → 比較結果</strong>。老師可以引導同學把數據畫成簡單的直條圖喔！
+  </p>
+</section>
+
+</main>
+
+<footer>
+  <p><strong>課堂使用說明：</strong>本頁為單一 HTML 檔案，用瀏覽器直接開啟（file://）即可離線使用，無需網路。</p>
+  <p style="margin-top:6px;">適合臺灣國小資優班／科展指導 · 三浦折疊（Miura-ori）科普教材 · 請老師投影至約 1280px 寬螢幕使用</p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  // ---- helpers ----
+  const $ = (id) => document.getElementById(id);
+
+  // ---- Crease pattern ----
+  const ROWS = 4; // horizontal bands
+  const COLS = 4; // parallelograms across
+  let alphaDeg = 60;
+  let showLabels = true;
+
+  function drawCreasePattern() {
+    const svg = $('creaseSvg');
+    const W = 640, H = 340;
+    const marginX = 50, marginY = 40;
+    const usableW = W - marginX * 2;
+    const usableH = H - marginY * 2;
+    const alpha = (alphaDeg * Math.PI) / 180;
+    const cellH = usableH / ROWS;
+    const cellW = usableW / COLS;
+    const skew = cellH / Math.tan(alpha); // horizontal offset per row
+
+    // Collect grid points: (COLS+1) x (ROWS+1)
+    // Each row is shifted by alternating skew so we get zigzag verticals
+    const pts = [];
+    for (let r = 0; r <= ROWS; r++) {
+      const row = [];
+      // Miura: alternate columns offset — classic pattern:
+      // horizontal lines straight; vertical zig-zag.
+      // Points: x = c*cellW + (r%2===0 ? 0 : skew*0) wait —
+      // Standard Miura crease: rows of parallelograms with alternating lean.
+      // For row r, each column c point:
+      //   x = marginX + c * cellW + (r % 2 === 0 ? 0 : offset)
+      // Better classic approach: offset by ±(skew/2) alternating per row
+      const rowOffset = (r % 2 === 0) ? 0 : skew;
+      for (let c = 0; c <= COLS; c++) {
+        row.push({
+          x: marginX + c * cellW + rowOffset,
+          y: marginY + r * cellH
+        });
+      }
+      pts.push(row);
+    }
+
+    // Normalize / recenter so pattern fits
+    let minX = Infinity, maxX = -Infinity;
+    pts.forEach(row => row.forEach(p => {
+      minX = Math.min(minX, p.x);
+      maxX = Math.max(maxX, p.x);
+    }));
+    const shift = (W - (maxX - minX)) / 2 - minX;
+    pts.forEach(row => row.forEach(p => { p.x += shift; }));
+
+    let html = '';
+    // subtle fill for cells
+    for (let r = 0; r < ROWS; r++) {
+      for (let c = 0; c < COLS; c++) {
+        const p00 = pts[r][c], p01 = pts[r][c+1];
+        const p10 = pts[r+1][c], p11 = pts[r+1][c+1];
+        const shade = ((r + c) % 2 === 0) ? '#ebf8ff' : '#fff5f5';
+        html += `<polygon points="${p00.x},${p00.y} ${p01.x},${p01.y} ${p11.x},${p11.y} ${p10.x},${p10.y}" fill="${shade}" stroke="none"/>`;
+      }
+    }
+
+    // Horizontal creases: alternate mountain / valley by row
+    for (let r = 0; r <= ROWS; r++) {
+      const isMountain = (r % 2 === 0);
+      for (let c = 0; c < COLS; c++) {
+        const a = pts[r][c], b = pts[r][c+1];
+        if (isMountain) {
+          html += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#c53030" stroke-width="2.5" stroke-linecap="round"/>`;
+        } else {
+          html += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#2b6cb0" stroke-width="2.5" stroke-dasharray="8 5" stroke-linecap="round"/>`;
+        }
+      }
+    }
+
+    // Vertical (zigzag) creases: alternate M/V by column, and also flip with row parity for Miura
+    for (let c = 0; c <= COLS; c++) {
+      for (let r = 0; r < ROWS; r++) {
+        const a = pts[r][c], b = pts[r+1][c];
+        // Miura assignment: mountain/valley alternate along both directions
+        const isMountain = ((c + r) % 2 === 0);
+        if (isMountain) {
+          html += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#c53030" stroke-width="2.5" stroke-linecap="round"/>`;
+        } else {
+          html += `<line x1="${a.x}" y1="${a.y}" x2="${b.x}" y2="${b.y}" stroke="#2b6cb0" stroke-width="2.5" stroke-dasharray="8 5" stroke-linecap="round"/>`;
+        }
+      }
+    }
+
+    // Labels
+    if (showLabels) {
+      // mountain label near top edge
+      const midTop = pts[0][Math.floor(COLS/2)];
+      html += `<text x="${midTop.x}" y="${midTop.y - 12}" text-anchor="middle" fill="#c53030" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">山折</text>`;
+      // valley label near a dashed horizontal
+      if (ROWS >= 1) {
+        const midV = pts[1][Math.floor(COLS/2)];
+        html += `<text x="${midV.x}" y="${midV.y - 10}" text-anchor="middle" fill="#2b6cb0" font-size="14" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">谷折</text>`;
+      }
+      // one more on a vertical
+      const vp = pts[Math.floor(ROWS/2)][0];
+      html += `<text x="${vp.x - 8}" y="${vp.y + 4}" text-anchor="end" fill="#c53030" font-size="13" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">山折</text>`;
+      if (COLS >= 1) {
+        const vp2 = pts[Math.floor(ROWS/2)][1];
+        html += `<text x="${vp2.x + 8}" y="${vp2.y + 4}" text-anchor="start" fill="#2b6cb0" font-size="13" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">谷折</text>`;
+      }
+    }
+
+    // alpha annotation on first cell
+    const p0 = pts[0][0], p1 = pts[0][1], p2 = pts[1][0];
+    html += `<text x="${(p0.x + p1.x)/2}" y="${p0.y + 18}" text-anchor="middle" fill="#4a5568" font-size="12" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">a</text>`;
+    // angle arc hint
+    html += `<text x="${p0.x + 22}" y="${p0.y + 28}" fill="#dd6b20" font-size="13" font-weight="700" font-family="inherit">α=${alphaDeg}°</text>`;
+
+    svg.innerHTML = html;
+  }
+
+  // ---- Fold animation (2.5D-ish projection) ----
+  // Approximate Miura kinematics for classroom visualization:
+  // t=0 tightly folded (narrow + foreshortened), t=1 fully flat open.
+  // Panels stay parallelograms; alternating columns tilt in opposite ways.
+
+  const F_ROWS = 3;
+  const F_COLS = 4;
+
+  function miuraPanels(t, alphaDegLocal) {
+    const alpha = (alphaDegLocal * Math.PI) / 180;
+    // t in [0,1]
+    const tClamped = Math.max(0, Math.min(1, t));
+    // Dihedral-related foreshortening: panels "stand up" when mid-fold
+    const dihedral = (1 - tClamped) * (Math.PI / 2); // 90° folded-ish → 0° flat
+    const cosD = Math.cos(dihedral);
+    const sinD = Math.sin(dihedral);
+
+    // Unit cell sizes when fully open
+    const a = 78; // along row (parallelogram base)
+    const b = 62; // along slanted side
+    // Projected cell width/height
+    const cellW = a * (0.12 + 0.88 * tClamped);          // compresses when folded
+    const cellH = b * Math.sin(alpha) * (0.25 + 0.75 * Math.max(0.15, cosD + (1 - cosD) * tClamped));
+    // Zigzag offset from alpha; shrinks slightly when folded
+    const skew = (b * Math.cos(alpha)) * (0.35 + 0.65 * tClamped) * cellH / Math.max(1, b * Math.sin(alpha) * 0.5);
+
+    // Vertical "pop" for 2.5D: alternate columns rise when partly folded
+    const pop = 18 * Math.sin(Math.PI * tClamped) * (1 - tClamped * 0.3);
+
+    const colorsA = ['#63b3ed', '#fc8181', '#68d391', '#f6e05e'];
+    const colorsB = ['#4299e1', '#f56565', '#48bb78', '#ecc94b'];
+
+    const panels = [];
+    for (let r = 0; r < F_ROWS; r++) {
+      const rowOff = (r % 2 === 0) ? 0 : skew;
+      for (let c = 0; c < F_COLS; c++) {
+        const x0 = c * cellW + rowOff;
+        const yBase = r * cellH;
+        // Alternating tilt: odd columns tip the other way
+        const tip = ((c + r) % 2 === 0 ? 1 : -1) * pop;
+        const topY = yBase - tip * 0.35;
+        const botY = yBase + cellH + tip * 0.35;
+        // Slight perspective: top edge shifts when tipped
+        const persp = tip * 0.25;
+
+        const p0 = { x: x0 + persp, y: topY };
+        const p1 = { x: x0 + cellW + persp, y: topY };
+        const p2 = { x: x0 + cellW + skew * 0.2 - persp * 0.3, y: botY };
+        const p3 = { x: x0 + skew * 0.2 - persp * 0.3, y: botY };
+
+        const palette = (r + c) % 2 === 0 ? colorsA : colorsB;
+        panels.push({
+          points: [p0, p1, p2, p3],
+          color: palette[c % palette.length],
+          depth: yBase + tip, // for sort
+          r, c
+        });
+      }
+    }
+
+    panels.sort((A, B) => A.depth - B.depth);
+
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    panels.forEach(pan => pan.points.forEach(pt => {
+      minX = Math.min(minX, pt.x); maxX = Math.max(maxX, pt.x);
+      minY = Math.min(minY, pt.y); maxY = Math.max(maxY, pt.y);
+    }));
+    return { panels, minX, maxX, minY, maxY };
+  }
+
+  function drawFold(t) {
+    const svg = $('foldSvg');
+    const W = 720, H = 380;
+    const { panels, minX, maxX, minY, maxY } = miuraPanels(t, alphaDeg);
+    const bw = Math.max(1, maxX - minX);
+    const bh = Math.max(1, maxY - minY);
+    const pad = 48;
+    const scale = Math.min((W - pad * 2) / bw, (H - pad * 2 - 20) / bh);
+    const ox = (W - bw * scale) / 2 - minX * scale;
+    const oy = (H - bh * scale) / 2 - minY * scale + 8;
+
+    let html = `<rect x="0" y="0" width="${W}" height="${H}" fill="#f7fafc"/>`;
+    const shadowW = 70 + 160 * t;
+    html += `<ellipse cx="${W / 2}" cy="${H - 32}" rx="${shadowW}" ry="${8 + 8 * t}" fill="rgba(26,35,50,0.14)"/>`;
+
+    panels.forEach(pan => {
+      const pts = pan.points.map(p => `${(p.x * scale + ox).toFixed(1)},${(p.y * scale + oy).toFixed(1)}`).join(' ');
+      // subtle edge highlight
+      html += `<polygon points="${pts}" fill="${pan.color}" stroke="#2d3748" stroke-width="1.15" opacity="0.93"/>`;
+    });
+
+    const pct = Math.round(t * 100);
+    const label = t < 0.08 ? '收合' : t > 0.92 ? '完全展開' : '展開中…';
+    html += `<text x="${W / 2}" y="26" text-anchor="middle" fill="#2b6cb0" font-size="16" font-weight="700" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">${label}（${pct}%）</text>`;
+    // dimension hint
+    const spanW = Math.round(40 + 220 * t);
+    const spanH = Math.round(30 + 120 * t);
+    html += `<text x="${W / 2}" y="${H - 10}" text-anchor="middle" fill="#718096" font-size="12" font-family="Noto Sans TC, PingFang TC, Microsoft JhengHei, sans-serif">示意寬度隨展開變大（非實際比例）</text>`;
+
+    svg.innerHTML = html;
+  }
+
+  // ---- Wire up controls ----
+  const alphaSlider = $('alphaSlider');
+  const alphaVal = $('alphaVal');
+  const showLabelsCb = $('showLabels');
+  const foldSlider = $('foldSlider');
+  const foldVal = $('foldVal');
+  const playBtn = $('playBtn');
+  const resetBtn = $('resetBtn');
+
+  function syncAlpha() {
+    alphaDeg = +alphaSlider.value;
+    alphaVal.textContent = alphaDeg + '°';
+    drawCreasePattern();
+    drawFold(+foldSlider.value / 100);
+  }
+
+  alphaSlider.addEventListener('input', syncAlpha);
+  showLabelsCb.addEventListener('change', () => {
+    showLabels = showLabelsCb.checked;
+    drawCreasePattern();
+  });
+
+  foldSlider.addEventListener('input', () => {
+    const v = +foldSlider.value;
+    foldVal.textContent = v + '%';
+    drawFold(v / 100);
+  });
+
+  let animTimer = null;
+  playBtn.addEventListener('click', () => {
+    if (animTimer) {
+      cancelAnimationFrame(animTimer);
+      animTimer = null;
+      playBtn.textContent = '▶ 播放動畫';
+      return;
+    }
+    playBtn.textContent = '⏹ 停止';
+    // Animate fold → unfold → fold once cycle starting from current
+    const start = performance.now();
+    const duration = 3200; // ms for full cycle
+    const startVal = +foldSlider.value;
+
+    function frame(now) {
+      const elapsed = now - start;
+      // Go to 100, then to 0, then stop at start-ish — one unfold then fold
+      let v;
+      if (elapsed < duration / 2) {
+        // toward 100 from startVal
+        const p = elapsed / (duration / 2);
+        v = startVal + (100 - startVal) * easeInOut(p);
+      } else if (elapsed < duration) {
+        const p = (elapsed - duration / 2) / (duration / 2);
+        v = 100 + (0 - 100) * easeInOut(p);
+      } else {
+        foldSlider.value = 0;
+        foldVal.textContent = '0%';
+        drawFold(0);
+        playBtn.textContent = '▶ 播放動畫';
+        animTimer = null;
+        return;
+      }
+      foldSlider.value = Math.round(v);
+      foldVal.textContent = Math.round(v) + '%';
+      drawFold(v / 100);
+      animTimer = requestAnimationFrame(frame);
+    }
+    animTimer = requestAnimationFrame(frame);
+  });
+
+  function easeInOut(x) {
+    return x < 0.5 ? 2 * x * x : 1 - Math.pow(-2 * x + 2, 2) / 2;
+  }
+
+  resetBtn.addEventListener('click', () => {
+    if (animTimer) {
+      cancelAnimationFrame(animTimer);
+      animTimer = null;
+      playBtn.textContent = '▶ 播放動畫';
+    }
+    foldSlider.value = 35;
+    foldVal.textContent = '35%';
+    drawFold(0.35);
+  });
+
+  // Init
+  drawCreasePattern();
+  drawFold(0.35);
+})();
+</script>
+</body>
+</html>
